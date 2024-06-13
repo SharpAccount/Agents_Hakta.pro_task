@@ -9,7 +9,7 @@ public class Sale
 
     public int OrderSum { get; set; }
 
-    Sale(string name, int orderSum)
+    public Sale(string name, int orderSum)
     {
         ProuctName = name;
         SaleDate = DateTime.Today;

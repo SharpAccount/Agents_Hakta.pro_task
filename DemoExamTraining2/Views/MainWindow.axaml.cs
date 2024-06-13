@@ -18,7 +18,7 @@ public partial class MainWindow : Window
 
     public void OpenAddWindow(object sender, RoutedEventArgs args)
     {
-        Window AddOrEditWindow = new AddOrEditWindow(false);
+        Window AddOrEditWindow = new AddOrEditWindow();
         CloseAllWindowsExcept();
         Windows.Add(AddOrEditWindow);
         AddOrEditWindow.Show();
@@ -26,7 +26,7 @@ public partial class MainWindow : Window
     
     public void OpenEditWindow(object sender, TappedEventArgs args)
     {
-        Window AddOrEditWindow = new AddOrEditWindow(true);
+        Window AddOrEditWindow = new AddOrEditWindow(AgentList.SelectedItem);
         CloseAllWindowsExcept();
         Windows.Add(AddOrEditWindow);
         AddOrEditWindow.Show();

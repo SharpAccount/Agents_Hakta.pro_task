@@ -2,6 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:DemoExamTraining2.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:c="using:DemoExamTraining2.Helpers"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="510"
         Width="640" Height="510"
@@ -13,6 +14,10 @@
     <Window.Styles>
         <StyleInclude Source="../Styles/MainStyles.axaml"/>
     </Window.Styles>
+    
+    <Window.Resources>
+        <c:VisibilityConvertor x:Key="VisibilityConvertor"/>
+    </Window.Resources>
     
     <Grid RowDefinitions="Auto 3* *"
           Margin="20">
@@ -26,7 +31,7 @@
                         Orientation="Horizontal">
                 <ComboBox PlaceholderText="Сортировка">
                     <ComboBoxItem>
-                        <Button Content="ClearFilters"
+                        <Button Content="Default"
                                 Command="{Binding ClearFilters}"/>
                     </ComboBoxItem>
                     <ComboBoxItem>
@@ -38,12 +43,12 @@
                                 Command="{Binding SortAgentsByNameDesc}"/>
                     </ComboBoxItem>
                     <ComboBoxItem>
-                        <Button Content="SortAgentsByNameAsc"
-                                Command="{Binding SortAgentsByNameAsc}"/>
-                    </ComboBoxItem>
-                    <ComboBoxItem>
                         <Button Content="SortAgentsByDiscountAsc"
                                 Command="{Binding SortAgentsByDiscountAsc}"/>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <Button Content="SortAgentsByDiscountDesc"
+                                Command="{Binding SortAgentsByDiscountDesc}"/>
                     </ComboBoxItem>
                     <ComboBoxItem>  
                         <Button Content="SortAgentsByPriorityAsc"
@@ -66,6 +71,7 @@
             </StackPanel>
         </Grid> 
         <ListBox Grid.Row="1"
+                 Name="AgentList"
                  ItemsSource="{Binding FilteredAgents}"
                  SelectionMode="Multiple"
                  Margin="0 20 0 0"
@@ -99,16 +105,21 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <Panel Grid.Row="2">
-            <TextBlock  Text="Странички тут будут" 
-                        VerticalAlignment="Bottom" 
-                        HorizontalAlignment="Right"/>
+            <StackPanel VerticalAlignment="Bottom" 
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+            </StackPanel>
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Bottom">
                 <Button Content="+"
                         Click="OpenAddWindow"/>
                 <Button Content="Change Priority"
-                        IsVisible="{Binding IsSelected}"/>
+                        Name="ChangePriorityButton"
+                        IsVisible="{Binding SelectedAgents, Converter={StaticResource VisibilityConvertor}}"/>
+                <Button Content="Set sales"
+                        Name="SetSalesButton"
+                        IsVisible="{Binding SelectedAgents, Converter={StaticResource VisibilityConvertor}}"/>
             </StackPanel>
         </Panel>
     </Grid>

@@ -16,13 +16,14 @@ public class Agent: INotifyPropertyChanged
     private string _address;
     private static int _agentCount;
     private int _id;
-    private int _priority;
+    private uint _priority;
     private int _discount;
+    private int _checkpoint;
     private AgentType _type;
     private Bitmap _logo;
-    private static ObservableCollection<Sale> _sales;
+    private ObservableCollection<Sale> _sales;
 
-    public Agent(string name, string phoneNum, string email, string principal, string itn, string address, int priority, Bitmap logo, AgentType type)
+    public Agent(string name, string phoneNum, string email, string principal, string itn, string address, uint priority, int checkpoint, Bitmap logo, AgentType type)
     {
         _id = _agentCount;
         _name = name;
@@ -34,12 +35,13 @@ public class Agent: INotifyPropertyChanged
         _priority = priority;
         _logo = logo;
         _type = type;
-        _sales = new ObservableCollection<Sale>();
+        Sales = new ObservableCollection<Sale>();
         _discount = 0;
+        _checkpoint = checkpoint;
         _agentCount++;
     }
     
-    public Agent(string name, string phoneNum, string email, string principal, string itn, string address, int priority, Bitmap logo, AgentType type, ObservableCollection<Sale> sales)
+    public Agent(string name, string phoneNum, string email, string principal, string itn, string address, uint priority, int checkpoint, Bitmap logo, AgentType type, ObservableCollection<Sale> sales)
     {
         _name = name;
         _phoneNum = phoneNum;
@@ -50,7 +52,8 @@ public class Agent: INotifyPropertyChanged
         _priority = priority;
         _logo = logo;
         _type = type;
-        _sales = sales;
+        _checkpoint = checkpoint;
+        Sales = sales;
         _agentCount++;
     }
     
@@ -126,7 +129,13 @@ public class Agent: INotifyPropertyChanged
         get => _id;
     }
 
-    public int Priority
+    public int Checkpoint
+    {
+        get => _checkpoint;
+        set => _checkpoint = value;
+    }
+
+    public uint Priority
     {
         get => _priority;
         set
@@ -169,11 +178,12 @@ public class Agent: INotifyPropertyChanged
         {
             _sales = value;
             int _sum = _sales.Sum(order => order.OrderSum);
-            Discount = 
+            _discount = 
                 _sum > 10000 && _sum <= 50000 ? 5
                 : _sum > 50000 && _sum <= 150000 ? 10
                 : _sum > 150000 && _sum <= 500000 ? 20
                 : _sum > 500000 ? 25 : 0;
+            Discount = _discount;
             OnPropChanged(nameof(Sales));
             OnPropChanged(nameof(Discount));
         }
